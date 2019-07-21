@@ -1,11 +1,11 @@
 package com.massita.query.messages;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -15,7 +15,7 @@ import java.util.List;
  * Test for specific JPA methods
  */
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @DataJpaTest
 public class MessageRepositoryTest {
 
@@ -41,7 +41,7 @@ public class MessageRepositoryTest {
                 LocalDateTime.now().truncatedTo(ChronoUnit.DAYS).plusDays(1)
         );
 
-        Assert.assertEquals(2, todayMessages.size());
+        Assertions.assertEquals(2, todayMessages.size());
     }
 
 }

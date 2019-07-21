@@ -1,12 +1,13 @@
 package com.massita.sevices.commands;
 
 import com.massita.coreapi.NotifyType;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -15,7 +16,7 @@ import java.util.concurrent.Future;
  * {@link MessageCommandService} methods tests
  */
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class MessageCommandServiceImplTest {
@@ -42,17 +43,23 @@ public class MessageCommandServiceImplTest {
         resultWaiter.get();
     }
 
-    @Test(expected = ExecutionException.class)
+    @Test
     public void errorScheduleMessageWhenNotCreated() throws InterruptedException, ExecutionException {
-        Future<Void> resultWaiter = messageCommandService.notifyAboutMessage("3");
-        resultWaiter.get();
+        Assertions.assertThrows(ExecutionException.class, () -> {
+            Future<Void> resultWaiter = messageCommandService.notifyAboutMessage("3");
+            resultWaiter.get();
+        });
     }
 
-    @Test(expected = ExecutionException.class)
+    @Test
     public void errorScheduleMessageWhenNotScheduled() throws InterruptedException, ExecutionException {
         messageCommandService.createMessage("4", "1");
-        Future<Void> resultWaiter = messageCommandService.notifyAboutMessage("4");
-        resultWaiter.get();
+        Assertions.assertThrows(ExecutionException.class, () -> {
+            Future<Void> resultWaiter = messageCommandService.notifyAboutMessage("4");
+            resultWaiter.get();
+
+        });
+
     }
 
 }

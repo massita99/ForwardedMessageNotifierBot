@@ -3,8 +3,8 @@ package com.massita.commandmodel;
 import com.massita.coreapi.*;
 import org.axonframework.test.aggregate.AggregateTestFixture;
 import org.axonframework.test.aggregate.FixtureConfiguration;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for main business logic
@@ -13,7 +13,7 @@ public class ForwardedMessageAggregateUnitTest {
 
     private FixtureConfiguration<ForwardedMessageAggregate> fixture;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         fixture = new AggregateTestFixture<>(ForwardedMessageAggregate.class);
     }

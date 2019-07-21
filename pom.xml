@@ -6,7 +6,7 @@
 
     <groupId>com.massita</groupId>
     <artifactId>ForwardedMessageNotifierBot</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.2-SNAPSHOT</version>
 
     <developers>
         <developer>
@@ -27,8 +27,10 @@
         <maven.compiler.target>11</maven.compiler.target>
         <telegrambots.version>4.2</telegrambots.version>
         <axon.version>4.1</axon.version>
-        <junit.version>4.12</junit.version>
+        <junit.version>5.3.2</junit.version>
         <lombok.version>1.18.4</lombok.version>
+        <mockito.version>2.23.0</mockito.version>
+        <testgrid.version>1.0.0</testgrid.version>
     </properties>
 
     <dependencies>
@@ -96,22 +98,30 @@
             <version>2.3.1</version>
         </dependency>
 
-        <!-- Swagger -->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>2.9.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>2.9.2</version>
-        </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+
+            <exclusions>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
+
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -123,18 +133,18 @@
         </dependency>
 
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.wso2.testgrid</groupId>
             <artifactId>org.wso2.testgrid.core</artifactId>
-            <version>1.0.0</version>
+            <version>${testgrid.version}</version>
             <scope>test</scope>
         </dependency>
 
-
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 

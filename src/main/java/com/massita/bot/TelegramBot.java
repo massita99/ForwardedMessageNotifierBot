@@ -1,10 +1,10 @@
 package com.massita.bot;
 
 import com.massita.coreapi.MessageAboutNotifiedEvent;
+import com.massita.coreapi.MessageScheduledEvent;
 import com.massita.coreapi.MessageSentToScheduleEvent;
 import com.massita.coreapi.NotifyType;
 import com.massita.sevices.commands.MessageCommandService;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -31,15 +31,16 @@ import static org.telegram.abilitybots.api.objects.Privacy.PUBLIC;
 @Profile("telegram")
 public class TelegramBot extends AbilityBot implements MessageSender {
 
-    @Autowired
-    @Setter
-    private MessageCommandService messageCommandService;
+
+    private final MessageCommandService messageCommandService;
 
 
-    public TelegramBot(DefaultBotOptions botOptions,
+    public TelegramBot(@Autowired MessageCommandService messageCommandService,
+                       DefaultBotOptions botOptions,
                        @Value("${telegram.bot.token}") String botToken,
-                       @Value("telegram.bot.username") String botUsername) {
+                       @Value("${telegram.bot.username}") String botUsername) {
         super(botToken, botUsername, botOptions);
+        this.messageCommandService = messageCommandService;
     }
 
 
@@ -70,7 +71,7 @@ public class TelegramBot extends AbilityBot implements MessageSender {
             messageCommandService.scheduleMessage(
                     ctx.update().getCallbackQuery().getMessage().getReplyToMessage().getMessageId().toString(),
                     NotifyType.valueOf(ctx.update().getCallbackQuery().getData()))
-                    ;
+            ;
             return;
         }
     }
@@ -100,6 +101,24 @@ public class TelegramBot extends AbilityBot implements MessageSender {
         // Add it to the message
         markupInline.setKeyboard(rowsInline);
         message.setReplyMarkup(markupInline);
+        sender.execute(message);
+    }
+
+    @Override
+    public void on(MessageScheduledEvent event) throws Exception {
+        String responseText = "";
+        if (event.getTime().equals(NEVER)) {
+            responseText = "This message not scheduled";
+        } else {
+            responseText = "Notification about this message will be "
+                    + event.getTime().name()
+                    + " at "
+                    + event.getTime().getNotifyTime().toString();
+        }
+        SendMessage message = new SendMessage() // Create a message object object
+                .setChatId(Long.parseLong(event.getChatId()))
+                .setReplyToMessageId(Integer.valueOf(event.getMessageId()))
+                .setText(responseText);
         sender.execute(message);
     }
 

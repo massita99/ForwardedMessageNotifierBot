@@ -12,9 +12,9 @@ import java.util.concurrent.ExecutionException;
 @Component
 public class ScheduledTasks {
 
-    MessageQueryService messageQueryService;
+    private final MessageQueryService messageQueryService;
 
-    MessageCommandService messageCommandService;
+    private final MessageCommandService messageCommandService;
 
     public ScheduledTasks(MessageQueryService messageQueryService, MessageCommandService messageCommandService) {
         this.messageQueryService = messageQueryService;

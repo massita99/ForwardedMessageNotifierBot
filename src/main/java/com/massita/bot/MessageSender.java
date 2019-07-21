@@ -1,6 +1,7 @@
 package com.massita.bot;
 
 import com.massita.coreapi.MessageAboutNotifiedEvent;
+import com.massita.coreapi.MessageScheduledEvent;
 import com.massita.coreapi.MessageSentToScheduleEvent;
 import org.axonframework.eventhandling.EventHandler;
 
@@ -12,6 +13,9 @@ public interface MessageSender {
 
     @EventHandler
     void on(MessageSentToScheduleEvent event) throws Exception;
+
+    @EventHandler
+    void on(MessageScheduledEvent event) throws Exception;
 
     @EventHandler
     void on(MessageAboutNotifiedEvent event) throws Exception;
