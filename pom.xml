@@ -31,6 +31,7 @@
         <lombok.version>1.18.4</lombok.version>
         <mockito.version>2.23.0</mockito.version>
         <testgrid.version>1.0.0</testgrid.version>
+        <mongo.embedded>test</mongo.embedded>
     </properties>
 
     <dependencies>
@@ -78,7 +79,7 @@
         <dependency>
             <groupId>de.flapdoodle.embed</groupId>
             <artifactId>de.flapdoodle.embed.mongo</artifactId>
-            <scope>test</scope>
+            <scope>${mongo.embedded}</scope>
             <version>2.2.0</version>
         </dependency>
 
