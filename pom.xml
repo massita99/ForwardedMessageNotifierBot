@@ -6,7 +6,7 @@
 
     <groupId>com.massita</groupId>
     <artifactId>ForwardedMessageNotifierBot</artifactId>
-    <version>0.5-SNAPSHOT</version>
+    <version>0.9-SNAPSHOT</version>
 
     <developers>
         <developer>
@@ -18,10 +18,15 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.1.5.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
 
     <properties>
+        <telegram.proxy.enabled>true</telegram.proxy.enabled>
+        <telegram.proxy.host>118.172.251.170</telegram.proxy.host>
+        <telegram.proxy.host>8080</telegram.proxy.host>
+        <telegram.proxy.type>HTTP</telegram.proxy.type>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
