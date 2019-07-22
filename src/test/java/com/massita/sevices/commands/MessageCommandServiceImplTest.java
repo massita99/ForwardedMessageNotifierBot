@@ -30,10 +30,8 @@ public class MessageCommandServiceImplTest {
 
     @Test
     public void saveMessage() throws InterruptedException, ExecutionException {
-
         Future<String> resultWaiter = messageCommandService.createMessage("1", "1");
         resultWaiter.get();
-
     }
 
     @Test

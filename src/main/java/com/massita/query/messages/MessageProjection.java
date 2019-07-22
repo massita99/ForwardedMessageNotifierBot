@@ -26,8 +26,9 @@ public class MessageProjection {
 
     @EventHandler
     public void on(MessageScheduledEvent event) {
-        Message message = messageRepository.getOne(event.getMessageId());
+        Message message = messageRepository.findById(event.getMessageId()).get();
         message.setNotifyTime(event.getTime().getNotifyTime());
+        messageRepository.save(message);
 
     }
 

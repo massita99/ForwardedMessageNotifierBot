@@ -3,6 +3,8 @@ package com.massita.sevices.queries;
 import com.massita.coreapi.NotifyType;
 import com.massita.query.messages.Message;
 import com.massita.sevices.commands.MessageCommandService;
+import org.awaitility.Awaitility;
+import org.awaitility.Duration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,15 +34,18 @@ public class MessageQueryServiceImplTest {
         messageCommandService.scheduleMessage("1", NotifyType.TOMORROW);
         messageCommandService.createMessage("2", "1");
         Future<Void> resultWaiter = messageCommandService.scheduleMessage("2", NotifyType.NEXT_WEEK);
-        resultWaiter.get();
+        Awaitility.await()
+                .atMost(Duration.ONE_SECOND)
+                .untilAsserted(() ->
+                        Assertions.assertEquals(1, getTomorrowMessages().get().size()));
 
-        Future<List<Message>> tomorrowMessages = messageQueryService.listMessagesBetween(
+    }
+
+    private Future<List<Message>> getTomorrowMessages() {
+        return messageQueryService.listMessagesBetween(
                 LocalDateTime.now().truncatedTo(ChronoUnit.DAYS).plusDays(1),
                 LocalDateTime.now().truncatedTo(ChronoUnit.DAYS).plusDays(2)
-
         );
-
-        Assertions.assertEquals(1, tomorrowMessages.get().size());
     }
 
 }

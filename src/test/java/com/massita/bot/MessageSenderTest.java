@@ -6,6 +6,8 @@ import com.massita.coreapi.MessageScheduledEvent;
 import com.massita.coreapi.MessageSentToScheduleEvent;
 import com.massita.coreapi.NotifyType;
 import com.massita.sevices.commands.MessageCommandService;
+import org.awaitility.Awaitility;
+import org.awaitility.Duration;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -34,9 +36,11 @@ public class MessageSenderTest {
     public void testSentToScheduleEvent() throws Exception {
         Future<String> resultWaiter = messageCommandService.createMessage("1", "1");
         resultWaiter.get();
-        //Just to be sure that message Delivered
-        Thread.sleep(10);
-        Mockito.verify(messageSender, Mockito.atLeast(1)).on(ArgumentMatchers.any(MessageSentToScheduleEvent.class));
+
+        Awaitility.await()
+                .atMost(Duration.ONE_SECOND)
+                .untilAsserted(() ->
+                        Mockito.verify(messageSender, Mockito.atLeast(1)).on(ArgumentMatchers.any(MessageSentToScheduleEvent.class)));
 
     }
 
@@ -47,9 +51,10 @@ public class MessageSenderTest {
         Future<Void> resultWaiter = messageCommandService.notifyAboutMessage("2");
         resultWaiter.get();
 
-        //Just to be sure that message Delivered
-        Thread.sleep(10);
-        Mockito.verify(messageSender, Mockito.atLeast(1)).on(ArgumentMatchers.any(MessageAboutNotifiedEvent.class));
+        Awaitility.await()
+                .atMost(Duration.ONE_SECOND)
+                .untilAsserted(() ->
+                        Mockito.verify(messageSender, Mockito.atLeast(1)).on(ArgumentMatchers.any(MessageAboutNotifiedEvent.class)));
 
     }
 
@@ -59,9 +64,10 @@ public class MessageSenderTest {
         Future<Void> resultWaiter = messageCommandService.scheduleMessage("3", NotifyType.TOMORROW);
         resultWaiter.get();
 
-        //Just to be sure that message Delivered
-        Thread.sleep(10);
-        Mockito.verify(messageSender, Mockito.atLeast(1)).on(ArgumentMatchers.any(MessageScheduledEvent.class));
+        Awaitility.await()
+                .atMost(Duration.ONE_SECOND)
+                .untilAsserted(() ->
+                        Mockito.verify(messageSender, Mockito.atLeast(1)).on(ArgumentMatchers.any(MessageScheduledEvent.class)));
 
     }
 
