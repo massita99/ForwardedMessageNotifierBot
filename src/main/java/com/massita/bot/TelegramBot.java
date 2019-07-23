@@ -56,7 +56,7 @@ public class TelegramBot extends AbilityBot implements MessageSender {
                 .privacy(PUBLIC)
                 .locality(ALL)
                 .input(0)
-                .action(ctx -> handleInputMessage(ctx))
+                .action(this::handleInputMessage)
                 .build();
     }
 
@@ -70,8 +70,7 @@ public class TelegramBot extends AbilityBot implements MessageSender {
         if (ctx.update().hasCallbackQuery()) {
             messageCommandService.scheduleMessage(
                     ctx.update().getCallbackQuery().getMessage().getReplyToMessage().getMessageId().toString(),
-                    NotifyType.valueOf(ctx.update().getCallbackQuery().getData()))
-            ;
+                    NotifyType.valueOf(ctx.update().getCallbackQuery().getData()));
             return;
         }
     }

@@ -9,16 +9,16 @@ All parameter list:
 * `telegram.proxy.enabled` - enable proxy if Telegram blocked on your server
 * `telegram.proxy.host` - if proxy enabled then proxy host
 * `telegram.proxy.port` - if proxy enabled then proxy port
-* `telegram.proxy.type` - if proxy enabled then proxy type ex: HTTP/SOCKS4/SOCKS5
+* `telegram.proxy.type` - if proxy enabled then proxy type, ex: HTTP/SOCKS4/SOCKS5
 * `telegram.bot.username` - name of your bot. should get from @BotFather
 * `telegram.bot.token` - token of your bot. should get from @BotFather
 * `mongo.embedded` - *provided* if you prefer use embedded mongo/*test* if you had mongo server
 
 ### Current main bot use case:
-1. User send or forward message to the bot
-2. Bot ask user to schedule notification by reply on received message
-3. After user scheduled notification bot send schedule confirmation
-4. Bot notify about message at notification date as replied message 
+1. User sends or forwards message to the bot
+2. Bot asks user to schedule notification by reply on received message
+3. After user scheduled notification bot sends schedule confirmation
+4. Bot notifies about message at notification date as replied message 
 
 ### Used Technologies
 * https://axoniq.io - CQRS Event Sourcing framework as base
