@@ -24,7 +24,7 @@
     <properties>
         <telegram.proxy.enabled>true</telegram.proxy.enabled>
         <telegram.proxy.host>118.172.251.170</telegram.proxy.host>
-        <telegram.proxy.host>8080</telegram.proxy.host>
+        <telegram.proxy.port>8080</telegram.proxy.port>
         <telegram.proxy.type>HTTP</telegram.proxy.type>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
