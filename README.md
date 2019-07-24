@@ -5,6 +5,8 @@ The Telegram Bot based on Event Sourcing architecture that notify about all mess
 
 `mvn spring-boot:run -Dtelegram.proxy.enabled=false -Dtelegram.bot.username=<your bot name from BotFather> -Dtelegram.bot.token=<yout token from BotFather> -Dmongo.embedded=provided`
 
+the command run bot on embedded mongo server without proxy with your bot token.
+
 All parameter list:
 * `telegram.proxy.enabled` - enable proxy if Telegram blocked on your server
 * `telegram.proxy.host` - if proxy enabled then proxy host
