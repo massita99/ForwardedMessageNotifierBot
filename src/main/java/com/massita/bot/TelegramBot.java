@@ -1,10 +1,9 @@
 package com.massita.bot;
 
-import com.massita.coreapi.MessageAboutNotifiedEvent;
-import com.massita.coreapi.MessageScheduledEvent;
-import com.massita.coreapi.MessageSentToScheduleEvent;
-import com.massita.coreapi.NotifyType;
-import com.massita.sevices.commands.MessageCommandService;
+import com.massita.coreapi.ReturnResultEventEvent;
+import com.massita.coreapi.StartEventEvent;
+import com.massita.services.commands.GameCommandService;
+import org.axonframework.eventhandling.EventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -15,32 +14,33 @@ import org.telegram.abilitybots.api.objects.Flag;
 import org.telegram.abilitybots.api.objects.MessageContext;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.massita.coreapi.NotifyType.*;
 import static org.telegram.abilitybots.api.objects.Flag.CALLBACK_QUERY;
 import static org.telegram.abilitybots.api.objects.Locality.ALL;
 import static org.telegram.abilitybots.api.objects.Privacy.PUBLIC;
 
 @Controller
 @Profile("telegram")
-public class TelegramBot extends AbilityBot implements MessageSender {
+public class TelegramBot extends AbilityBot {
 
 
-    private final MessageCommandService messageCommandService;
+    private final GameCommandService gameCommandService;
 
 
-    public TelegramBot(@Autowired MessageCommandService messageCommandService,
+    public TelegramBot(@Autowired GameCommandService gameCommandService,
                        DefaultBotOptions botOptions,
                        @Value("${telegram.bot.token}") String botToken,
                        @Value("${telegram.bot.username}") String botUsername) {
         super(botToken, botUsername, botOptions);
-        this.messageCommandService = messageCommandService;
+        this.gameCommandService = gameCommandService;
     }
 
 
@@ -60,75 +60,73 @@ public class TelegramBot extends AbilityBot implements MessageSender {
                 .build();
     }
 
+    public Ability newGame() {
+        return Ability.builder()
+                .name("newGame")
+                .privacy(PUBLIC)
+                .locality(ALL)
+                .input(0)
+                .action(ctx -> gameCommandService.createGame(ctx.chatId().toString()))
+                .build();
+    }
+
     private void handleInputMessage(MessageContext ctx) {
         if (ctx.update().hasMessage()) {
-            messageCommandService.createMessage(
-                    ctx.update().getMessage().getMessageId().toString(),
-                    ctx.chatId().toString());
-            return;
+            if (ctx.update().getMessage().getText().contains("new")) {
+                gameCommandService.createGame(ctx.chatId().toString());
+            }
         }
         if (ctx.update().hasCallbackQuery()) {
-            messageCommandService.scheduleMessage(
-                    ctx.update().getCallbackQuery().getMessage().getReplyToMessage().getMessageId().toString(),
-                    NotifyType.valueOf(ctx.update().getCallbackQuery().getData()));
+            gameCommandService.processEvent(
+                    ctx.update().getCallbackQuery().getMessage().getChatId().toString(),
+                    ctx.update().getCallbackQuery().getData());
             return;
         }
     }
 
 
-    @Override
-    public void on(MessageSentToScheduleEvent event) throws TelegramApiException {
+    @EventHandler
+    public void on(StartEventEvent event) throws TelegramApiException {
+        if (event.getPhoto() != null) {
+
+            ClassLoader classLoader = getClass().getClassLoader();
+            File file = new File(classLoader.getResource(event.getPhoto()).getFile());
+
+            SendPhoto photo = new SendPhoto()
+                    .setChatId(Long.parseLong(event.getChatId()))
+                    .setPhoto(file);
+
+            sender.sendPhoto(photo);
+        }
+
         SendMessage message = new SendMessage() // Create a message object object
                 .setChatId(Long.parseLong(event.getChatId()))
-                .setReplyToMessageId(Integer.valueOf(event.getMessageId()))
-                .setText("Please schedule notification")
+                .setText(event.getDescription())
                 .enableMarkdown(true);
 
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
-        List<InlineKeyboardButton> firstRowInline = new ArrayList<>();
-        firstRowInline.add(new InlineKeyboardButton().setText(NEVER.toString()).setCallbackData(NEVER.toString()));
-        firstRowInline.add(new InlineKeyboardButton().setText(TOMORROW.toString()).setCallbackData(TOMORROW.toString()));
 
-        List<InlineKeyboardButton> secondRowInline = new ArrayList<>();
-        secondRowInline.add(new InlineKeyboardButton().setText(NEXT_WEEK.toString()).setCallbackData(NEXT_WEEK.toString()));
-        secondRowInline.add(new InlineKeyboardButton().setText(NEXT_MONTH.toString()).setCallbackData(NEXT_MONTH.toString()));
+        for (String text : event.getActions()) {
+            rowsInline.add(List.of(new InlineKeyboardButton().setText(text).setCallbackData(text)));
+        }
 
-        // Set the keyboard to the markup
-        rowsInline.add(firstRowInline);
-        rowsInline.add(secondRowInline);
-        // Add it to the message
         markupInline.setKeyboard(rowsInline);
         message.setReplyMarkup(markupInline);
         sender.execute(message);
     }
 
-    @Override
-    public void on(MessageScheduledEvent event) throws Exception {
-        String responseText = "";
-        if (event.getTime().equals(NEVER)) {
-            responseText = "This message not scheduled";
-        } else {
-            responseText = "Notification about this message will be "
-                    + event.getTime().name()
-                    + " at "
-                    + event.getTime().getNotifyTime().toString();
-        }
-        SendMessage message = new SendMessage() // Create a message object object
+
+    @EventHandler
+    public void on(ReturnResultEventEvent event) throws TelegramApiException {
+
+        SendMessage statMessage = new SendMessage() // Create a message object object
                 .setChatId(Long.parseLong(event.getChatId()))
-                .setReplyToMessageId(Integer.valueOf(event.getMessageId()))
-                .setText(responseText);
-        sender.execute(message);
+                .setText(event.getStats())
+                .enableMarkdown(true);
+
+        sender.execute(statMessage);
     }
 
-    @Override
-    public void on(MessageAboutNotifiedEvent event) throws TelegramApiException {
-        SendMessage message = new SendMessage() // Create a message object object
-                .setChatId(Long.parseLong(event.getChatId()))
-                .setReplyToMessageId(Integer.valueOf(event.getMessageId()))
-                .setText("Kindly notify you")
-                .enableMarkdown(true);
-        sender.execute(message);
-    }
 
 }

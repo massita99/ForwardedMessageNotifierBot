@@ -2,8 +2,8 @@ package com.massita.commandmodel;
 
 public enum Status {
 
-    NEW,
-    SCHEDULED,
-    DELIVERED
 
+    IN_PROCESS,
+
+    OUT_OF_GAME
 }
