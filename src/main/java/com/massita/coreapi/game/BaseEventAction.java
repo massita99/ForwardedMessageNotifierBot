@@ -13,6 +13,10 @@ public class BaseEventAction implements EventAction {
 
     private String eventActionDescription;
 
+    public String getEventResultDescription() {
+        return eventResultDescription == null ? "" : eventResultDescription;
+    }
+
     private String eventResultDescription;
 
     private Map<Resource, Integer> eventPrice;

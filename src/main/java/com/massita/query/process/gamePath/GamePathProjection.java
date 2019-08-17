@@ -1,29 +1,18 @@
 package com.massita.query.process.gamePath;
 
-import com.massita.coreapi.CreateGameEvent;
 import com.massita.coreapi.PathQuery;
 import com.massita.coreapi.game.MainScenario;
-import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GamePathProjection {
+public class GamePathProjection implements InitializingBean {
 
     private final GamePathRepository gamePathRepository;
 
     public GamePathProjection(GamePathRepository gamePathRepository) {
         this.gamePathRepository = gamePathRepository;
-    }
-
-    @EventHandler
-    public void on(CreateGameEvent event) {
-        gamePathRepository.save(
-                new GamePath(
-                        event.getChatId(),
-                        new MainScenario()
-                )
-        );
     }
 
     @QueryHandler
@@ -33,7 +22,10 @@ public class GamePathProjection {
     }
 
 
-
-
-
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        if (!gamePathRepository.findById("MAIN").isPresent()) {
+            gamePathRepository.save(new GamePath("MAIN", new MainScenario()));
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.massita.bot;
 
+import com.google.common.base.Strings;
 import com.massita.coreapi.ReturnResultEventEvent;
 import com.massita.coreapi.StartEventEvent;
 import com.massita.services.commands.GameCommandService;
@@ -71,6 +72,7 @@ public class TelegramBot extends AbilityBot {
     }
 
     private void handleInputMessage(MessageContext ctx) {
+
         if (ctx.update().hasMessage()) {
             if (ctx.update().getMessage().getText().contains("new")) {
                 gameCommandService.createGame(ctx.chatId().toString());
@@ -87,8 +89,7 @@ public class TelegramBot extends AbilityBot {
 
     @EventHandler
     public void on(StartEventEvent event) throws TelegramApiException {
-        if (event.getPhoto() != null) {
-
+        if (!Strings.isNullOrEmpty(event.getPhoto())) {
             ClassLoader classLoader = getClass().getClassLoader();
             File file = new File(classLoader.getResource(event.getPhoto()).getFile());
 

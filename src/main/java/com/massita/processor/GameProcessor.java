@@ -1,49 +1,37 @@
 package com.massita.processor;
 
 import com.massita.coreapi.CreateGameEvent;
-import com.massita.coreapi.PathQuery;
-import com.massita.coreapi.PlayerQuery;
 import com.massita.coreapi.ProcessEventEvent;
 import com.massita.coreapi.game.EventAction;
-import com.massita.coreapi.game.MainScenario;
 import com.massita.coreapi.game.Resource;
 import com.massita.query.process.gamePath.GamePath;
-import com.massita.query.process.gamePath.GamePathRepository;
 import com.massita.query.process.player.Player;
-import com.massita.query.process.player.PlayerRepository;
 import com.massita.services.commands.GameCommandService;
+import com.massita.services.queries.GameQueryService;
 import org.axonframework.eventhandling.EventHandler;
-import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
-import static org.axonframework.messaging.responsetypes.ResponseTypes.instanceOf;
-
 @Service
 public class GameProcessor {
 
-    private final QueryGateway gateway;
-
     private final GameCommandService gameCommandService;
 
-    private final PlayerRepository playerRepository;
+    private final GameQueryService queryService;
 
-    private final GamePathRepository gamePathRepository;
 
-    public GameProcessor(QueryGateway gateway, GameCommandService gameCommandService, PlayerRepository playerRepository, GamePathRepository gamePathRepository) {
-        this.gateway = gateway;
+    public GameProcessor(GameCommandService gameCommandService, GameQueryService queryService) {
         this.gameCommandService = gameCommandService;
-        this.playerRepository = playerRepository;
-        this.gamePathRepository = gamePathRepository;
+        this.queryService = queryService;
     }
 
     @EventHandler
     public void on(CreateGameEvent event) throws ExecutionException, InterruptedException {
-        GamePath path = new GamePath(event.getChatId(), new MainScenario());
-        gamePathRepository.save(path);
+        GamePath path = queryService.getGamePath("MAIN");
+
         gameCommandService.startEvent(event.getChatId(),
                 path.getPathEvents().get("START").getEventDescription(),
                 path.getPathEvents().get("START").getEventActions().stream()
@@ -57,19 +45,32 @@ public class GameProcessor {
 
     @EventHandler
     public void on(ProcessEventEvent event) throws ExecutionException, InterruptedException {
-        GamePath path = gateway.query(new PathQuery(event.getChatId()), instanceOf(GamePath.class)).get();
-        Player player = gateway.query(new PlayerQuery(event.getChatId()), instanceOf(Player.class)).get();
+        GamePath path = queryService.getGamePath("MAIN");
+        Player player = queryService.getPlayer(event.getChatId());
 
         EventAction selectedAction = path.getPathActions().get(event.getAnswerText());
 
+        if (selectedAction.getEventPrice() != null) {
+            handleResourceChange(event, player, selectedAction);
+        }
+
+        //Идем на следюущий евент
+        gameCommandService.startEvent(event.getChatId(),
+                path.getPathEvents().get(selectedAction.getNextStageName()).getEventDescription(),
+                path.getPathEvents().get(selectedAction.getNextStageName()).getEventActions().stream().map(EventAction::getEventActionDescription).collect(Collectors.toList()),
+                path.getPathEvents().get(selectedAction.getNextStageName()).getPhoto()
+                );
+    }
+
+    private void handleResourceChange(ProcessEventEvent event, Player player, EventAction selectedAction) {
         Map<Resource, Integer> newPlayerResources = player.getResources();
         selectedAction.getEventPrice().forEach((key, value) -> newPlayerResources.put(key, newPlayerResources.getOrDefault(key, 0) + value));
 
         player.setResources(newPlayerResources);
 
-        playerRepository.save(player);
+        gameCommandService.updateStats(event.getChatId(), newPlayerResources);
 
-        if (player.getResources().values().stream().anyMatch(el -> el <= 0)) {
+        if (newPlayerResources.values().stream().anyMatch(el -> el <= 0)) {
             //finish
         }
 
@@ -82,13 +83,6 @@ public class GameProcessor {
                             .collect(Collectors.joining(", "))
             );
         }
-
-        //Идем на следюущий евент
-        gameCommandService.startEvent(event.getChatId(),
-                path.getPathEvents().get(selectedAction.getNextStageName()).getEventDescription(),
-                path.getPathEvents().get(selectedAction.getNextStageName()).getEventActions().stream().map(EventAction::getEventActionDescription).collect(Collectors.toList()),
-                path.getPathEvents().get(selectedAction.getNextStageName()).getPhoto()
-                );
     }
 
 }

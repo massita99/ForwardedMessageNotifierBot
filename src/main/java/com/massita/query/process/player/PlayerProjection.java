@@ -2,6 +2,7 @@ package com.massita.query.process.player;
 
 import com.massita.coreapi.CreateGameEvent;
 import com.massita.coreapi.PlayerQuery;
+import com.massita.coreapi.UpdateStatsEvent;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,13 @@ public class PlayerProjection {
     @EventHandler
     public void on(CreateGameEvent event) {
         playerRepository.save(new Player(event.getChatId()));
+    }
+
+    @EventHandler
+    public void on(UpdateStatsEvent event) {
+        Player player = playerRepository.findById(event.getChatId()).get();
+        player.setResources(event.getStats());
+        playerRepository.save(player);
     }
 
     @QueryHandler

@@ -28,7 +28,9 @@ public class GameAggregate {
 
     @CommandHandler
     public void handle(StartEventCommand command) {
-        apply(new StartEventEvent(command.getChatId(), command.getDescription(), command.getActions(), command.getPhoto()));
+        if (this.status == IN_PROCESS) {
+            apply(new StartEventEvent(command.getChatId(), command.getDescription(), command.getActions(), command.getPhoto()));
+        }
     }
 
     @CommandHandler
@@ -41,13 +43,15 @@ public class GameAggregate {
         apply(new ReturnResultEventEvent(command.getChatId(), command.getResultText(), command.getStats()));
     }
 
+    @CommandHandler
+    public void handle(UpdateStatsCommand command) {
+        apply(new UpdateStatsEvent(command.getChatId(), command.getStats()));
+    }
+
     @EventSourcingHandler
     protected void on(CreateGameEvent event) {
         this.chatId = event.getChatId();
         this.status = IN_PROCESS;
     }
-
-
-
 
 }

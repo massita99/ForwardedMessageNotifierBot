@@ -6,6 +6,7 @@ import org.axonframework.eventsourcing.eventstore.EventStorageEngine;
 import org.axonframework.eventsourcing.eventstore.EventStore;
 import org.axonframework.extensions.mongo.DefaultMongoTemplate;
 import org.axonframework.extensions.mongo.eventsourcing.eventstore.MongoEventStorageEngine;
+import org.axonframework.extensions.mongo.eventsourcing.tokenstore.MongoTokenStore;
 import org.axonframework.spring.config.AxonConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,4 +28,12 @@ public class AxonConfig {
         return MongoEventStorageEngine.builder().mongoTemplate(DefaultMongoTemplate.builder().mongoDatabase(client).build()).build();
     }
 
+    @Bean
+    public MongoTokenStore tokenStore(MongoClient client, AxonConfiguration config) {
+        return MongoTokenStore.builder()
+                .mongoTemplate(DefaultMongoTemplate.builder().mongoDatabase(client).build())
+                .serializer(config.serializer())
+                .build();
+
+    }
 }

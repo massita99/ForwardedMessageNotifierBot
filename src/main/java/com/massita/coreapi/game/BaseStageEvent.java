@@ -14,6 +14,10 @@ public class BaseStageEvent implements StageEvent {
 
     private String photo;
 
+    public String getPhoto() {
+        return photo == null ? "" : photo;
+    }
+
     private String eventDescription;
 
     @Singular
