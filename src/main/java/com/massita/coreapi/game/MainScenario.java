@@ -62,12 +62,13 @@ public class MainScenario extends BaseScenario {
                                 .build(),
                         BaseStageEvent.builder()
                                 .name("2_2")
+                                .photo("anton_end.jpg")
                                 .eventDescription("Ты проиграл")
                                 .eventAction(FINAL_ACTION)
                                 .build(),
                         BaseStageEvent.builder()
                                 .name("2_3")
-                                .eventDescription("Ты проиграл")
+                                .eventDescription("Я в Иране, в этот раз без меня")
                                 .photo("Mike.jpg")
                                 .eventAction(FINAL_ACTION)
                                 .build(),
@@ -86,11 +87,11 @@ public class MainScenario extends BaseScenario {
                         BaseStageEvent.builder()
                                 .name("3")
                                 .eventDescription("Доступные ресурсы:\n" +
-                                        "Резерв времени — 100 единиц\n" +
-                                        "Резерв бюджета (риск-буфер) — 100 единиц\n" +
-                                        "Лояльность заказчика — 100 единиц\n" +
-                                        "Твое душевное состояние (нервы) — 100 единиц\n" +
-                                        "Здоровье команды (психика) — 100 единиц")
+                                        "\u23F0Резерв времени — 100 единиц\n" +
+                                        "\uD83D\uDCB0Резерв бюджета (риск-буфер) — 100 единиц\n" +
+                                        "\uD83D\uDE3BЛояльность заказчика — 100 единиц\n" +
+                                        "\uD83E\uDD2FТвое душевное состояние (нервы) — 100 единиц\n" +
+                                        "\uD83C\uDF08Здоровье команды (психика) — 100 единиц")
                                 .photo("Resources.jpg")
                                 .eventAction(
                                         BaseEventAction.builder()
@@ -108,7 +109,7 @@ public class MainScenario extends BaseScenario {
                         BaseStageEvent.builder()
                                 .name("4_1")
                                 .eventDescription("«Костя, ты ох%&л!!!»")
-                                .photo("Bad_choice.jpg")
+                                .photo("elena.jpeg")
                                 .eventAction(FINAL_ACTION)
                                 .eventAction(
                                         BaseEventAction.builder()
@@ -120,7 +121,8 @@ public class MainScenario extends BaseScenario {
                         BaseStageEvent.builder()
                                 .name("5")
                                 .eventDescription("Этап 1\uFF0E Сделать модель данных:\n" +
-                                        "Нет доступа к системам-источникам")
+                                        "Проблема 1\uFF0E Нет доступа к системам-источникам\n" +
+                                        "Что будешь делать?")
                                 .photo("No_access.jpg")
                                 .eventAction(
                                         BaseEventAction.builder()
@@ -146,7 +148,7 @@ public class MainScenario extends BaseScenario {
                                 .build(),
                         BaseStageEvent.builder()
                                 .name("6")
-                                .eventDescription("Отсутствует документация и экспертиза по системе-источнику")
+                                .eventDescription("Проблема 2\uFF0E Отсутствует документация и экспертиза по системе-источнику")
                                 .photo("No_expert.jpg")
                                 .eventAction(
                                         BaseEventAction.builder()
@@ -172,7 +174,7 @@ public class MainScenario extends BaseScenario {
                                 .build(),
                         BaseStageEvent.builder()
                                 .name("7")
-                                .eventDescription("Затягивается согласование модели")
+                                .eventDescription("Проблема 3\uFF0E Затягивается согласование модели")
                                 .photo("Waiting.jpg")
                                 .eventAction(
                                         BaseEventAction.builder()
@@ -199,8 +201,8 @@ public class MainScenario extends BaseScenario {
                         BaseStageEvent.builder()
                                 .name("8")
                                 .photo("More_Resources.jpg")
-                                .eventDescription("Этап 2\uFF0E Сделать готовый билд:\n" +
-                                        "Нужно сделать кастомный метод")
+                                .eventDescription("Этап 2\uFF0EСделать готовый билд:\n" +
+                                        "Проблема 1\uFF0EНужно сделать кастомный метод")
                                 .eventAction(
                                         BaseEventAction.builder()
                                                 .eventActionDescription("Запросить дополнительные ресурсы в команду у продакта Миши")
@@ -225,7 +227,7 @@ public class MainScenario extends BaseScenario {
                                 .build(),
                         BaseStageEvent.builder()
                                 .name("9")
-                                .eventDescription("Поступили новые вводные по модели от заказчика")
+                                .eventDescription("Проблема 2\uFF0EПоступили новые вводные по модели от заказчика")
                                 .photo("New_data.jpg")
                                 .eventAction(
                                         BaseEventAction.builder()
@@ -251,7 +253,7 @@ public class MainScenario extends BaseScenario {
                                 .build(),
                         BaseStageEvent.builder()
                                 .name("10")
-                                .eventDescription("Внедренец нанес добра, билд отличается от исходных требований к модели")
+                                .eventDescription("Проблема 3\uFF0EВнедренец нанес добра, билд отличается от исходных требований к модели")
                                 .photo("Fix_bug.jpg")
                                 .eventAction(
                                         BaseEventAction.builder()
@@ -278,8 +280,8 @@ public class MainScenario extends BaseScenario {
                         BaseStageEvent.builder()
                                 .name("11")
                                 .photo("Slow_pc.jpg")
-                                .eventDescription("Этап 3\uFF0E Развернуть билд, загрузить источники и настроить интеграции:\n" +
-                                        "На стенде херовое железо, не соответствует исходным требованиям")
+                                .eventDescription("Этап 3\uFF0EРазвернуть билд, загрузить источники и настроить интеграции:\n" +
+                                        "Проблема 1\uFF0EНа стенде херовое железо, не соответствует исходным требованиям")
                                 .eventAction(
                                         BaseEventAction.builder()
                                                 .eventActionDescription("Попробовать адаптировать билд под реалии железа")
@@ -304,7 +306,7 @@ public class MainScenario extends BaseScenario {
                                 .build(),
                         BaseStageEvent.builder()
                                 .name("12")
-                                .eventDescription("Данные загрузились криво")
+                                .eventDescription("Проблема 2\uFF0EДанные загрузились криво")
                                 .photo("etl.jpg")
                                 .eventAction(
                                         BaseEventAction.builder()
@@ -330,7 +332,7 @@ public class MainScenario extends BaseScenario {
                                 .build(),
                         BaseStageEvent.builder()
                                 .name("13")
-                                .eventDescription("Потребители кастомного метода жалуются, что метод работает неправильно")
+                                .eventDescription("Проблема 3\uFF0EПотребители кастомного метода жалуются, что метод работает неправильно")
                                 .photo("bad_method.jpg")
                                 .eventAction(
                                         BaseEventAction.builder()
@@ -357,8 +359,8 @@ public class MainScenario extends BaseScenario {
                         BaseStageEvent.builder()
                                 .name("14")
                                 .photo("new_team.jpg")
-                                .eventDescription("Этап 4\uFF0E Пройти приемку проекта:\n" +
-                                        "Сменилась команда заказчика, приемку будут проводить новые люди")
+                                .eventDescription("Этап 4\uFF0EПройти приемку проекта:\n" +
+                                        "Проблема 1\uFF0EСменилась команда заказчика, приемку будут проводить новые люди")
                                 .eventAction(
                                         BaseEventAction.builder()
                                                 .eventActionDescription("Наладить отношения с новой командой, отложить приемку")
@@ -383,7 +385,7 @@ public class MainScenario extends BaseScenario {
                                 .build(),
                         BaseStageEvent.builder()
                                 .name("15")
-                                .eventDescription("Заказчик считает, что часть требований не выполнено")
+                                .eventDescription("Проблема 2\uFF0EЗаказчик считает, что часть требований не выполнено")
                                 .photo("ungry_customer.jpg")
                                 .eventAction(
                                         BaseEventAction.builder()
@@ -409,7 +411,7 @@ public class MainScenario extends BaseScenario {
                                 .build(),
                         BaseStageEvent.builder()
                                 .name("16")
-                                .eventDescription("В день приемки сломалась интеграция")
+                                .eventDescription("Проблема 3\uFF0EВ день приемки сломалась интеграция")
                                 .photo("broke_integration.jpg")
                                 .eventAction(
                                         BaseEventAction.builder()
@@ -436,8 +438,8 @@ public class MainScenario extends BaseScenario {
                         BaseStageEvent.builder()
                                 .name("17")
                                 .photo("no_specs.jpg")
-                                .eventDescription("Этап 5\uFF0E Перевести систему на поддержку:\n" +
-                                        "У заказчика нет квалифицированных ресурсов для администрирования приложения")
+                                .eventDescription("Этап 5\uFF0EПеревести систему на поддержку:\n" +
+                                        "Проблема 1\uFF0EУ заказчика нет квалифицированных ресурсов для администрирования приложения")
                                 .eventAction(
                                         BaseEventAction.builder()
                                                 .eventActionDescription("Поддерживаем своими силами, пока заказчик не найдет админов")
@@ -462,7 +464,7 @@ public class MainScenario extends BaseScenario {
                                 .build(),
                         BaseStageEvent.builder()
                                 .name("18")
-                                .eventDescription("Появились проблемы с производительностью приложения")
+                                .eventDescription("Проблема 2\uFF0EПоявились проблемы с производительностью приложения")
                                 .photo("performance.jpg")
                                 .eventAction(
                                         BaseEventAction.builder()
@@ -488,7 +490,7 @@ public class MainScenario extends BaseScenario {
                                 .build(),
                         BaseStageEvent.builder()
                                 .name("19")
-                                .eventDescription("Криворукие админы заказчика порублудили в базе данных")
+                                .eventDescription("Проблема 3\uFF0EКриворукие админы заказчика порублудили в базе данных")
                                 .photo("good-job-admin.jpg")
                                 .eventAction(
                                         BaseEventAction.builder()

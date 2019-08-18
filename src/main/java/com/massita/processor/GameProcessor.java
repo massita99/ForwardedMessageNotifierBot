@@ -1,5 +1,6 @@
 package com.massita.processor;
 
+import com.google.common.base.Strings;
 import com.massita.coreapi.CreateGameEvent;
 import com.massita.coreapi.ProcessEventEvent;
 import com.massita.coreapi.game.EventAction;
@@ -77,12 +78,22 @@ public class GameProcessor {
 
 
         if (!selectedAction.getEventPrice().isEmpty()) {
+
+            String wastedResources = selectedAction.getEventPrice().entrySet()
+                    .stream()
+                    .filter(el -> el.getValue() < 0)
+                    .map(el -> el.getKey().getEmoji() + " " + el.getValue())
+                    .collect(Collectors.joining(", "));
+            String availableResources = player.getResources().entrySet().stream()
+                    .map(el -> el.getKey().getEmoji() + " " + el.getValue())
+                    .collect(Collectors.joining(", "));
+            String resourceMessage = Strings.isNullOrEmpty(wastedResources) ? "Доступно: " + availableResources :
+                    "Вы потратили: " + wastedResources + "\nОсталось: " + availableResources;
+
             gameCommandService.returnEventResult(
                     event.getChatId(),
                     selectedAction.getEventResultDescription(),
-                    player.getResources().entrySet().stream()
-                            .map(el -> el.getKey().getEmoji() + " - " + el.getValue())
-                            .collect(Collectors.joining(", "))
+                    resourceMessage
             );
         }
 
