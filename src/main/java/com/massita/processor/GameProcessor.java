@@ -37,7 +37,7 @@ public class GameProcessor {
         gameCommandService.startEvent(event.getChatId(),
                 path.getPathEvents().get("START").getEventDescription(),
                 path.getPathEvents().get("START").getEventActions().stream()
-                        .collect(Collectors.toMap(EventAction::getEventActionDescription, EventAction::getNextStageName)
+                        .collect(Collectors.toMap(EventAction::getEventActionDescription, EventAction::getEventHash)
                         ),
                 path.getPathEvents().get("START").getPhoto()
                 );
@@ -51,7 +51,7 @@ public class GameProcessor {
         EventAction selectedAction = path.getPathActions().get(event.getAnswerText());
 
         if (selectedAction.getEventPrice() != null) {
-            handleResourceChange(event, player, selectedAction);
+            selectedAction = handleResourceChange(event, player, selectedAction);
         }
 
         if (selectedAction.isReset()) {
@@ -61,12 +61,12 @@ public class GameProcessor {
         //Идем на следюущий евент
         gameCommandService.startEvent(event.getChatId(),
                 path.getPathEvents().get(selectedAction.getNextStageName()).getEventDescription(),
-                path.getPathEvents().get(selectedAction.getNextStageName()).getEventActions().stream().collect(Collectors.toMap(EventAction::getEventActionDescription, EventAction::getNextStageName)),
+                path.getPathEvents().get(selectedAction.getNextStageName()).getEventActions().stream().collect(Collectors.toMap(EventAction::getEventActionDescription, EventAction::getEventHash)),
                 path.getPathEvents().get(selectedAction.getNextStageName()).getPhoto()
                 );
     }
 
-    private void handleResourceChange(ProcessEventEvent event, Player player, EventAction selectedAction) {
+    private EventAction handleResourceChange(ProcessEventEvent event, Player player, EventAction selectedAction) {
         Map<Resource, Integer> newPlayerResources = player.getResources();
         selectedAction.getEventPrice().forEach((key, value) -> newPlayerResources.put(key, newPlayerResources.getOrDefault(key, 0) + value));
 
@@ -74,10 +74,7 @@ public class GameProcessor {
 
         gameCommandService.updateStats(event.getChatId(), newPlayerResources);
 
-        if (newPlayerResources.values().stream().anyMatch(el -> el <= 0)) {
-            selectedAction = LOOSE_ACTION;
 
-        }
 
         if (!selectedAction.getEventPrice().isEmpty()) {
             gameCommandService.returnEventResult(
@@ -88,6 +85,13 @@ public class GameProcessor {
                             .collect(Collectors.joining(", "))
             );
         }
+
+        if (newPlayerResources.values().stream().anyMatch(el -> el <= 0)) {
+            selectedAction = LOOSE_ACTION;
+
+        }
+
+        return selectedAction;
     }
 
 }

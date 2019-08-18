@@ -2,6 +2,7 @@ package com.massita.coreapi.game;
 
 import lombok.Builder;
 import lombok.Getter;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.Map;
 
@@ -17,6 +18,11 @@ public class BaseEventAction implements EventAction {
 
     public String getEventResultDescription() {
         return eventResultDescription == null ? "" : eventResultDescription;
+    }
+
+    @Override
+    public String getEventHash() {
+        return DigestUtils.md5Hex(eventActionDescription);
     }
 
     private String eventResultDescription;

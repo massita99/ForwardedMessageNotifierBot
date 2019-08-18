@@ -13,4 +13,6 @@ public interface EventAction {
     String getNextStageName();
 
     boolean isReset();
+
+    String getEventHash();
 }

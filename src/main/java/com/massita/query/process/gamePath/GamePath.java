@@ -37,7 +37,7 @@ public class GamePath {
                 .flatMap(event -> event.getEventActions().stream())
                 .collect(Collectors.toList());
 
-        eventActions.forEach(el -> this.pathActions.put(el.getNextStageName(), el));
+        eventActions.forEach(el -> this.pathActions.put(el.getEventHash(), el));
     }
 
 
