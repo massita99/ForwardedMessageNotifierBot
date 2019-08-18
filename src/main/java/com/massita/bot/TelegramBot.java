@@ -108,8 +108,8 @@ public class TelegramBot extends AbilityBot {
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
 
-        for (String text : event.getActions()) {
-            rowsInline.add(List.of(new InlineKeyboardButton().setText(text).setCallbackData(text)));
+        for (var text : event.getActions().entrySet()) {
+            rowsInline.add(List.of(new InlineKeyboardButton().setText(text.getKey()).setCallbackData(text.getValue())));
         }
 
         markupInline.setKeyboard(rowsInline);

@@ -5,7 +5,6 @@ import com.massita.coreapi.game.Resource;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 
@@ -23,7 +22,7 @@ public class GameCommandService {
         return result;
     }
 
-    public Future<String> startEvent(String chatId, String description, List<String> answers, String photo) {
+    public Future<String> startEvent(String chatId, String description, Map<String, String> answers, String photo) {
 
         Future<String> result = commandGateway.send(new StartEventCommand(chatId, description, answers, photo));
         return result;
@@ -42,6 +41,11 @@ public class GameCommandService {
 
     public Future<String> returnEventResult(String chatId, String description, String currentStats) {
         Future<String> result = commandGateway.send(new ReturnResultEventCommand(chatId, description, currentStats));
+        return result;
+    }
+
+    public Future<String> resetStats(String chatId) {
+        Future<String> result = commandGateway.send(new ResetStatsCommand(chatId));
         return result;
     }
 }

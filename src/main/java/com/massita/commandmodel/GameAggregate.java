@@ -48,6 +48,11 @@ public class GameAggregate {
         apply(new UpdateStatsEvent(command.getChatId(), command.getStats()));
     }
 
+    @CommandHandler
+    public void handle(ResetStatsCommand command) {
+        apply(new ResetStatsEvent(command.getChatId()));
+    }
+
     @EventSourcingHandler
     protected void on(CreateGameEvent event) {
         this.chatId = event.getChatId();

@@ -15,6 +15,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
+import static com.massita.coreapi.game.MainScenario.FINAL_ACTION;
+
 @Service
 public class GameProcessor {
 
@@ -35,11 +37,9 @@ public class GameProcessor {
         gameCommandService.startEvent(event.getChatId(),
                 path.getPathEvents().get("START").getEventDescription(),
                 path.getPathEvents().get("START").getEventActions().stream()
-                        .map(EventAction::getEventActionDescription)
-                        .collect(Collectors.toList()
+                        .collect(Collectors.toMap(EventAction::getEventActionDescription, EventAction::getNextStageName)
                         ),
                 path.getPathEvents().get("START").getPhoto()
-
                 );
     }
 
@@ -54,10 +54,14 @@ public class GameProcessor {
             handleResourceChange(event, player, selectedAction);
         }
 
+        if (selectedAction.isReset()) {
+            gameCommandService.resetStats(event.getChatId());
+        }
+
         //Идем на следюущий евент
         gameCommandService.startEvent(event.getChatId(),
                 path.getPathEvents().get(selectedAction.getNextStageName()).getEventDescription(),
-                path.getPathEvents().get(selectedAction.getNextStageName()).getEventActions().stream().map(EventAction::getEventActionDescription).collect(Collectors.toList()),
+                path.getPathEvents().get(selectedAction.getNextStageName()).getEventActions().stream().collect(Collectors.toMap(EventAction::getEventActionDescription, EventAction::getNextStageName)),
                 path.getPathEvents().get(selectedAction.getNextStageName()).getPhoto()
                 );
     }
@@ -71,7 +75,8 @@ public class GameProcessor {
         gameCommandService.updateStats(event.getChatId(), newPlayerResources);
 
         if (newPlayerResources.values().stream().anyMatch(el -> el <= 0)) {
-            //finish
+            selectedAction = FINAL_ACTION;
+
         }
 
         if (!selectedAction.getEventPrice().isEmpty()) {
@@ -79,7 +84,7 @@ public class GameProcessor {
                     event.getChatId(),
                     selectedAction.getEventResultDescription(),
                     player.getResources().entrySet().stream()
-                            .map(el -> el.getKey().toString() + " - " + el.getValue())
+                            .map(el -> el.getKey().getEmoji() + " - " + el.getValue())
                             .collect(Collectors.joining(", "))
             );
         }

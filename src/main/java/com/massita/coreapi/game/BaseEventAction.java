@@ -11,6 +11,8 @@ public class BaseEventAction implements EventAction {
 
     private String nextStageName;
 
+    private boolean reset = false;
+
     private String eventActionDescription;
 
     public String getEventResultDescription() {

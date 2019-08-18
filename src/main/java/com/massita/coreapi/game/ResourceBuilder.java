@@ -10,24 +10,22 @@ public class ResourceBuilder {
     Map<Resource, Integer> resources = new HashMap<>();
 
     public ResourceBuilder full() {
-        resources = Map.of(
-                MONEY, 100,
-                TEAM, 100,
-                TIME, 100,
-                NERVES, 100,
-                LOYALITY, 100
-        );
+        resources = new HashMap<>();
+        resources.put(MONEY, 100);
+        resources.put(TEAM, 100);
+        resources.put(TIME, 100);
+        resources.put(NERVES, 100);
+        resources.put(LOYALITY, 100);
         return this;
     }
 
     public ResourceBuilder empty() {
-        resources = Map.of(
-                MONEY, 0,
-                TEAM, 0,
-                TIME, 0,
-                NERVES, 0,
-                LOYALITY, 0
-        );
+        resources = new HashMap<>();
+        resources.put(MONEY, 0);
+        resources.put(TEAM, 0);
+        resources.put(TIME, 0);
+        resources.put(NERVES, 0);
+        resources.put(LOYALITY, 0);
         return this;
     }
 

@@ -11,4 +11,6 @@ public interface EventAction {
     Map<Resource, Integer> getEventPrice();
 
     String getNextStageName();
+
+    boolean isReset();
 }
