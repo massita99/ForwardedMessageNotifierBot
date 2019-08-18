@@ -62,7 +62,7 @@ public class MainScenario extends BaseScenario {
                                 .build(),
                         BaseStageEvent.builder()
                                 .name("2_2")
-                                .photo("anton_end.jpg")
+                                .photo("AntonGameOver.PNG")
                                 .eventDescription("Ты проиграл")
                                 .eventAction(FINAL_ACTION)
                                 .build(),
@@ -179,22 +179,32 @@ public class MainScenario extends BaseScenario {
                                 .eventAction(
                                         BaseEventAction.builder()
                                                 .eventActionDescription("Эскалировать проблему на высшее руководство")
-                                                .nextStageName("8")
+                                                .nextStageName("end_1")
                                                 .eventPrice(new ResourceBuilder().empty().minus(Resource.LOYALITY, 20).minus(Resource.NERVES, 20).build())
                                                 .build()
                                 )
                                 .eventAction(
                                         BaseEventAction.builder()
                                                 .eventActionDescription("Дождаться согласования в штатном порядке")
-                                                .nextStageName("8")
+                                                .nextStageName("end_1")
                                                 .eventPrice(new ResourceBuilder().empty().minus(Resource.TIME, 20).minus(Resource.NERVES, 10).build())
                                                 .build()
                                 )
                                 .eventAction(
                                         BaseEventAction.builder()
                                                 .eventActionDescription("Убеждать заказчиков принять решение")
-                                                .nextStageName("8")
+                                                .nextStageName("end_1")
                                                 .eventPrice(new ResourceBuilder().empty().minus(Resource.TIME, 5).minus(Resource.NERVES, 10).build())
+                                                .build()
+                                )
+                                .build(),
+                        BaseStageEvent.builder()
+                                .name("end_1")
+                                .eventDescription("Ура!!! Модель готова")
+                                .eventAction(
+                                        BaseEventAction.builder()
+                                                .eventActionDescription("Начнем следующий этап")
+                                                .nextStageName("8")
                                                 .build()
                                 )
                                 .build(),
@@ -258,22 +268,32 @@ public class MainScenario extends BaseScenario {
                                 .eventAction(
                                         BaseEventAction.builder()
                                                 .eventActionDescription("Собрать команду и принять решение о том, что мы будем переделывать")
-                                                .nextStageName("11")
+                                                .nextStageName("end_2")
                                                 .eventPrice(new ResourceBuilder().empty().minus(Resource.TIME, 10).build())
                                                 .build()
                                 )
                                 .eventAction(
                                         BaseEventAction.builder()
                                                 .eventActionDescription("Заставить внедренца переделывать билд")
-                                                .nextStageName("11")
+                                                .nextStageName("end_2")
                                                 .eventPrice(new ResourceBuilder().empty().minus(Resource.LOYALITY, 20).minus(Resource.NERVES, 15).build())
                                                 .build()
                                 )
                                 .eventAction(
                                         BaseEventAction.builder()
                                                 .eventActionDescription("Согласовать с заказчиком новую модель и адаптировать требования")
-                                                .nextStageName("11")
+                                                .nextStageName("end_2")
                                                 .eventPrice(new ResourceBuilder().empty().minus(Resource.TIME, 10).minus(Resource.NERVES, 10).build())
+                                                .build()
+                                )
+                                .build(),
+                        BaseStageEvent.builder()
+                                .name("end_2")
+                                .eventDescription("Браво! Билд готов")
+                                .eventAction(
+                                        BaseEventAction.builder()
+                                                .eventActionDescription("Продолжим")
+                                                .nextStageName("11")
                                                 .build()
                                 )
                                 .build(),
@@ -337,22 +357,32 @@ public class MainScenario extends BaseScenario {
                                 .eventAction(
                                         BaseEventAction.builder()
                                                 .eventActionDescription("Настоять на отсутствии ошибки и отказаться от переделки")
-                                                .nextStageName("14")
+                                                .nextStageName("end_3")
                                                 .eventPrice(new ResourceBuilder().empty().minus(Resource.LOYALITY, 20).minus(Resource.NERVES, 20).build())
                                                 .build()
                                 )
                                 .eventAction(
                                         BaseEventAction.builder()
                                                 .eventActionDescription("Выявить истинную потребность и переделать")
-                                                .nextStageName("14")
+                                                .nextStageName("end_3")
                                                 .eventPrice(new ResourceBuilder().empty().minus(Resource.TIME, 10).minus(Resource.TEAM, 10).build())
                                                 .build()
                                 )
                                 .eventAction(
                                         BaseEventAction.builder()
                                                 .eventActionDescription("Согласиться разобраться с проблемой, но после внедрения")
-                                                .nextStageName("14")
+                                                .nextStageName("end_3")
                                                 .eventPrice(new ResourceBuilder().empty().minus(Resource.MONEY, 15).build())
+                                                .build()
+                                )
+                                .build(),
+                        BaseStageEvent.builder()
+                                .name("end_3")
+                                .eventDescription("Супер! Билд развернут")
+                                .eventAction(
+                                        BaseEventAction.builder()
+                                                .eventActionDescription("Почти половина готова\uFF0EИдем дальше")
+                                                .nextStageName("14")
                                                 .build()
                                 )
                                 .build(),
@@ -416,22 +446,32 @@ public class MainScenario extends BaseScenario {
                                 .eventAction(
                                         BaseEventAction.builder()
                                                 .eventActionDescription("Перенести приемку")
-                                                .nextStageName("17")
+                                                .nextStageName("end_4")
                                                 .eventPrice(new ResourceBuilder().empty().minus(Resource.TIME, 30).build())
                                                 .build()
                                 )
                                 .eventAction(
                                         BaseEventAction.builder()
                                                 .eventActionDescription("Провести приемку с замечаниями")
-                                                .nextStageName("17")
+                                                .nextStageName("end_4")
                                                 .eventPrice(new ResourceBuilder().empty().minus(Resource.LOYALITY, 15).build())
                                                 .build()
                                 )
                                 .eventAction(
                                         BaseEventAction.builder()
                                                 .eventActionDescription("Сделать «потемкинские деревни» и сэмулировать нормальную работу интеграции")
-                                                .nextStageName("17")
+                                                .nextStageName("end_4")
                                                 .eventPrice(new ResourceBuilder().empty().minus(Resource.NERVES, 10).minus(Resource.TEAM, 10).build())
+                                                .build()
+                                )
+                                .build(),
+                        BaseStageEvent.builder()
+                                .name("end_4")
+                                .eventDescription("Вау! Приемка пройдена")
+                                .eventAction(
+                                        BaseEventAction.builder()
+                                                .eventActionDescription("И последний этап")
+                                                .nextStageName("17")
                                                 .build()
                                 )
                                 .build(),
