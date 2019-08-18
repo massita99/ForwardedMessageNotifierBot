@@ -473,7 +473,7 @@ public class MainScenario extends BaseScenario {
                                 )
                                 .eventAction(
                                         BaseEventAction.builder()
-                                                .eventActionDescription("Исправить после в счет бюджета проекта")
+                                                .eventActionDescription("Пойти на конфликт, настаивать, что требования выполнены, эскалировать")
                                                 .nextStageName("16")
                                                 .eventPrice(new ResourceBuilder().empty().minus(Resource.LOYALITY, 20).minus(Resource.NERVES, 10).build())
                                                 .build()
@@ -590,6 +590,18 @@ public class MainScenario extends BaseScenario {
                                                 .eventPrice(new ResourceBuilder().empty().minus(Resource.TIME, 30).build())
                                                 .build()
                                 )
+                                .build(),
+                        BaseStageEvent.builder()
+                                .name("WIN")
+                                .eventDescription("Вы победили")
+                                .photo("win.png")
+                                .eventAction(FINAL_ACTION)
+                                .build(),
+                        BaseStageEvent.builder()
+                                .name("LOOSE")
+                                .eventDescription("Вы проиграли")
+                                .photo("loose.jpg")
+                                .eventAction(FINAL_ACTION)
                                 .build()
 
 
@@ -604,5 +616,10 @@ public class MainScenario extends BaseScenario {
             .nextStageName("1_1")
             .eventActionDescription("Начать сначала")
             .reset(true)
+            .build();
+
+    public static EventAction LOOSE_ACTION = BaseEventAction.builder()
+            .nextStageName("LOOSE")
+            .eventActionDescription("Начать сначала")
             .build();
 }

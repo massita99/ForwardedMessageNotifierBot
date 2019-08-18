@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
-import static com.massita.coreapi.game.MainScenario.FINAL_ACTION;
+import static com.massita.coreapi.game.MainScenario.LOOSE_ACTION;
 
 @Service
 public class GameProcessor {
@@ -75,7 +75,7 @@ public class GameProcessor {
         gameCommandService.updateStats(event.getChatId(), newPlayerResources);
 
         if (newPlayerResources.values().stream().anyMatch(el -> el <= 0)) {
-            selectedAction = FINAL_ACTION;
+            selectedAction = LOOSE_ACTION;
 
         }
 
