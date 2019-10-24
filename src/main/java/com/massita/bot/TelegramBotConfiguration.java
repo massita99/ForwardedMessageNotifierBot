@@ -15,7 +15,7 @@ public class TelegramBotConfiguration {
     private String proxyHost;
     @Value("${telegram.proxy.port}")
     private int proxyPort;
-    @Value("${telegram.proxy.type}")
+    @Value("§${telegram.proxy.type}")
     private DefaultBotOptions.ProxyType proxyType;
 
     @Bean

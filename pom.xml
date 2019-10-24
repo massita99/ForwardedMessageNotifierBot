@@ -23,8 +23,8 @@
 
     <properties>
         <telegram.proxy.enabled>true</telegram.proxy.enabled>
-        <telegram.proxy.host>5.58.11.215</telegram.proxy.host>
-        <telegram.proxy.port>43222</telegram.proxy.port>
+        <telegram.proxy.host>181.210.16.132</telegram.proxy.host>
+        <telegram.proxy.port>8080</telegram.proxy.port>
         <telegram.proxy.type>HTTP</telegram.proxy.type>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -240,6 +240,15 @@
                     </execution>
                 </executions>
             </plugin>
+
+                <plugin>
+                    <groupId>com.spotify</groupId>
+                    <artifactId>dockerfile-maven-plugin</artifactId>
+                    <version>1.4.9</version>
+                    <configuration>
+                        <repository>test</repository>
+                    </configuration>
+                </plugin>
         </plugins>
         <resources>
             <resource>

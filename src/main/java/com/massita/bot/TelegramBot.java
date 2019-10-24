@@ -21,6 +21,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,7 +89,7 @@ public class TelegramBot extends AbilityBot {
 
 
     @EventHandler
-    public void on(StartEventEvent event) throws TelegramApiException {
+    public void on(StartEventEvent event) throws TelegramApiException, URISyntaxException {
         if (!Strings.isNullOrEmpty(event.getPhoto())) {
             ClassLoader classLoader = getClass().getClassLoader();
             File file = new File(classLoader.getResource(event.getPhoto()).getFile());

@@ -21,7 +21,7 @@ public class MainScenario extends BaseScenario {
                                 .eventAction(
                                         BaseEventAction.builder()
                                                 .eventActionDescription("Нет, я слабак")
-                                                .nextStageName("START")
+                                                .nextStageName("LOOSE_2")
                                                 .build()
                                 )
                                 .build(),
@@ -108,7 +108,7 @@ public class MainScenario extends BaseScenario {
                                 .build(),
                         BaseStageEvent.builder()
                                 .name("4_1")
-                                .eventDescription("«Костя, ты ох%&л!!!»")
+                                .eventDescription("«Костя, ты о#%&л?»")
                                 .photo("elena.jpeg")
                                 .eventAction(FINAL_ACTION)
                                 .eventAction(
@@ -559,11 +559,28 @@ public class MainScenario extends BaseScenario {
                                 .eventDescription("Вы победили")
                                 .photo("win.png")
                                 .eventAction(FINAL_ACTION)
+                                .eventAction(
+                                        BaseEventAction.builder()
+                                                .eventActionDescription("Выпить с командой")
+                                                .nextStageName("DRINK")
+                                                .build())
                                 .build(),
                         BaseStageEvent.builder()
                                 .name("LOOSE")
                                 .eventDescription("Вы проиграли")
                                 .photo("loose.jpg")
+                                .eventAction(FINAL_ACTION)
+                                .build(),
+                        BaseStageEvent.builder()
+                                .name("LOOSE_2")
+                                .eventDescription("Вы проиграли")
+                                .photo("joker.jpg")
+                                .eventAction(FINAL_ACTION)
+                                .build(),
+                        BaseStageEvent.builder()
+                                .name("DRINK")
+                                .eventDescription("А Гинесс хоть там есть?")
+                                .photo("guiness.jpg")
                                 .eventAction(FINAL_ACTION)
                                 .build()
 
