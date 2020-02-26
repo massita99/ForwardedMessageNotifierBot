@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/massita99/ForwardedMessageNotifierBot/badge.svg?branch=master)](https://coveralls.io/github/massita99/ForwardedMessageNotifierBot?branch=master)
+
 # ForwardedMessageNotifierBot
 The Telegram Bot based on Event Sourcing architecture that notify about all messaged that user sent it
 
